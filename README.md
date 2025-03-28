@@ -92,6 +92,43 @@ Practical Demo
  
 ![image](https://github.com/user-attachments/assets/b6cefba5-6dbd-4317-8804-959ce02e69b8)
 ![image](https://github.com/user-attachments/assets/cd51dcac-d393-4d17-b68a-1a5430a12509)
-![image](https://github.com/user-attachments/assets/e558db9c-ff04-473b-afa3-a7b7b2403b89)
+![image](https://github.com/user-attachments/assets/47a3da96-b505-4c15-bcc8-dd719a18e9d7)
 
   - Now when we see ECR, image got pushed there
+
+![image](https://github.com/user-attachments/assets/39868615-8df4-4b3d-9e97-a1808aa157e8)
+
+  - Now we can take this container image from ECR and deploy onto ECS platform.
+  - Here we need task definition. Go to ECS - Create task definition - Provide name - Use launch template "Fargate"
+
+![image](https://github.com/user-attachments/assets/7693cfef-072d-454d-92c3-63a0835a2e42)
+
+  - We also have "Task role" and "Task Execution role". While container is running it might need access to other things like S3, cloudwatch
+  - Here we can use Task roles which allows containers in task to make API requests to AWS services
+  - Task execution role is used for container agent to make API request on our behalf
+  - IN Task execution role we can create new as we've to integrate with cloudwatch fpor logging
+
+![image](https://github.com/user-attachments/assets/18c0d866-627d-4c33-8976-8e954abe159b)
+
+  - Now provide container info like name, Image URL, container port
+
+![image](https://github.com/user-attachments/assets/c1b21485-f9c8-4def-9944-9b9e544f85d2)
+
+  - In logging, we're integrating it with cloudwatch. So keep it as is
+
+![image](https://github.com/user-attachments/assets/34efdc8b-a3ca-4111-af80-acef312d7665)
+
+  - Now we can see our task definition got created and is active
+
+![image](https://github.com/user-attachments/assets/3de3daff-0687-4633-92d5-a6be7ac52503)
+
+  - Now if we go inside cluster, we can see tasks, infrastructure
+
+![image](https://github.com/user-attachments/assets/e1fe9cd1-abb9-4903-af42-1d8e13f96ceb)
+
+
+- Now go to task definition and run task - Provide cluster - Create
+  - Now task gets launched. Task is implementation of task definition
+  - We can see task running
+ 
+- Thats how we can deploy application on ECS
