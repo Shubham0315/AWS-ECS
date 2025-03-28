@@ -53,5 +53,45 @@ Advantages of ECS
 - We dont have to manage anything. AWS will give us cluster and will support server(EC2) and serverless(fargate) models. If we use serverless fargate with ECS (just like lambda), we dont have to manage anything in our env. Using EC2 we need to attach EC2 with ECS.
 - Very simple in nature. K8S has very complicated architecture master and worker node. If we are not using EKS, using just minikube K8S we've to take care of all things. On ECS, if we want to run our app using ECS, we just have to create task definition(CR) which will create task and we can start using it. We can also create a service and integrate LB with it
 - Using fargate, we dont need to care avout anything, CRs will get created on their own
+- ECS is also cost effective compared to K8S
 
 
+----------------------------------------------------------------------------------------
+
+Practical Demo
+-
+- Just like K8S we need to create cluster in ECS.
+- Once cluster is created, we can select Fargate or EC2 to run our containers.
+- Just like pod in K8S, in ECS we've 'Task Definition' a yml file. In task definition we ddefine how does our container look like.
+  - After running it, task is created which actually runs our container.
+  - Once containers are running, we can create services which adds LB capabilities to container like ingress, app LB
+ 
+- In ECS we can use our inbuilt IAM roles and policies.
+
+- Go to ECS - Go to clusters - Create cluster - Provide name - Create with Fargate
+  - When using fargate instances, everything is managed automatically at runtime.
+  - ECS will have default cloudwatch monitoring enabled as they manage AWS solutions whereas in K8S we've to setup our own monitoring.
+
+![image](https://github.com/user-attachments/assets/be31cec2-6b7a-44d3-b709-2e67feff03fb)
+![image](https://github.com/user-attachments/assets/c7f494ea-181f-4758-b7d6-ed0d3c972f41)
+![image](https://github.com/user-attachments/assets/f133e7e0-1c2a-48cc-a13d-8807530cf4b1)
+
+- Below is the dockerfile and app.py used to this aplication.
+
+![image](https://github.com/user-attachments/assets/363c416a-2f96-447a-bfa6-776d599e6c86)
+![image](https://github.com/user-attachments/assets/1382381a-d285-4de6-8fd4-471fb9319d3f)
+
+- We'll build the docker image and push it to ECR docker registry
+  - Go to ECR - Create private registry (for security)
+  - First login to ECR :- **aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 861276124894.dkr.ecr.us-east-2.amazonaws.com**
+
+  - Build and tag :- **docker build -t 861276124894.dkr.ecr.us-east-2.amazonaws.com/demo-app-repo:latest .**
+  - URL taken from ECR registry created. So whenever we push our image, it will be pushed to this repo only
+ 
+  - Now for push :- **docker push 861276124894.dkr.ecr.us-east-2.amazonaws.com/:latest**
+ 
+![image](https://github.com/user-attachments/assets/b6cefba5-6dbd-4317-8804-959ce02e69b8)
+![image](https://github.com/user-attachments/assets/cd51dcac-d393-4d17-b68a-1a5430a12509)
+![image](https://github.com/user-attachments/assets/e558db9c-ff04-473b-afa3-a7b7b2403b89)
+
+  - Now when we see ECR, image got pushed there
